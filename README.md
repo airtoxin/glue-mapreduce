@@ -16,7 +16,7 @@ I solve these problems to run local Map-Reduce aggregation that have portablilit
 TODO: publish
 
 ##How to use
-
+###Script
 ```javascript
 var mr = new ( require('glue-mapreduce') )();
 
@@ -24,25 +24,22 @@ var data = fs.readFileSync('somefile.txt').toString().split('\n');
 
 // regist mapper
 mr.mapper = function (mapLine, callback) {
-    // process line and emit key value pair
+    // mapper called per iteration of input data
     var error = null;
     var split = mapLine.split(' ');
     var key = split[0],
         val = split[1];
 
-    return callback(error, {k: key, v: val)};
-    // or emit multi pairs
-    return callback(error, [
-        {k: 'key1', v: 'value1'},
-        {k: 'key2', v: 'value2'}
-    ]);
+    return callback(error, [{k: key, v: val}]};
+    // callback can be return multi key-value pairs
 };
 
 // regist reducer
 mr.reducer = function (key, values, callback) {
-    // process values and emit it with key
-    var emitData = [{k: key, v: values.length}];
-    return callback(error, emitData);
+    // reducer called per iteration of keys
+
+    return callback(error, [{k: key, v: values.length}]);
+    // callback can be return multi key-value pairs
 };
 
 // run Map-Reduce job
@@ -56,3 +53,15 @@ mr.run(data, function (results) {
     */
 });
 ```
+###run options
+glue-mapreduce make a decision about whether to run with local Map-Reduce or Hadoop streaming mapper or reducer by command-line argument.
+
+To run __local Map-Reduce__, `node somemapreduce.js local`
+
+To run __Hadoop Streaming Mapper__, `hadop jar hadoop-streaming.jar -mapper 'somemapreduce.js mapper' ...`
+
+To run __Hadoop Streaming Reducer__, `hadoop jar hadoop-streaming.jar -reducer 'somemapreduce.js reducer' ...`
+
+__Important__: To quote command need to assign argument.
+
+These behavior also can control by `mr.mode` variable. e.g. `mr.mode = 'local'` on script, it runs local Map-Reduce default (with no argument).
