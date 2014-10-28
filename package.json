@@ -1,0 +1,24 @@
+{
+  "name": "glue-mapreduce",
+  "version": "0.0.0",
+  "description": "A mapreduce library that has high portability for hadoop framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive -R spec test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/airtoxin/glue-mapreduce"
+  },
+  "keywords": [
+    "mapreduce",
+    "scalable",
+    "hadoop",
+    "EMR"
+  ],
+  "author": "airtoxin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/airtoxin/glue-mapreduce/issues"
+  }
+}
