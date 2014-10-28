@@ -64,4 +64,4 @@ To run __Hadoop Streaming Reducer__, `hadoop jar hadoop-streaming.jar -reducer '
 
 __Important__: To quote command need to assign argument.
 
-These behavior also can control by `mr.mode` variable. e.g. `mr.mode = 'local'` on script, it runs local Map-Reduce default (with no argument).
+These behavior also can control by `mr.mode` variable. This valiable can be taken `'local'`, `'mapper'` or `'reducer'`. e.g. `mr.mode = 'local'` runs local Map-Reduce aggregation.
