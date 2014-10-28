@@ -20,11 +20,17 @@ TODO: publish
 ```javascript
 var mr = new ( require('glue-mapreduce') )();
 
+var data = fs.readFileSync('somefile.txt').toString().split('\n');
+
 // regist mapper
-mr.mapper = function (line, callback) {
+mr.mapper = function (mapLine, callback) {
     // process line and emit key value pair
-var error = null;
-    return callback(error, {k: 'key', v: 'value')};
+    var error = null;
+    var split = mapLine.split(' ');
+    var key = split[0],
+        val = split[1];
+
+    return callback(error, {k: key, v: val)};
     // or emit multi pairs
     return callback(error, [
         {k: 'key1', v: 'value1'},
@@ -34,18 +40,18 @@ var error = null;
 
 // regist reducer
 mr.reducer = function (key, values, callback) {
-    // process values and emit it
-    var error = null;
-    return callback(error, values.join(','));
+    // process values and emit it with key
+    var emitData = [{k: key, v: values.length}];
+    return callback(error, emitData);
 };
 
 // run Map-Reduce job
-mr.run(function (results) {
+mr.run(data, function (results) {
     /*
     results is array of key value pair
     [{
         k: 'key',
-        v: 'value'
+        v: 100 (reduced values)
     }, ...]
     */
 });
