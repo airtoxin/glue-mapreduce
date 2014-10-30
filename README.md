@@ -1,7 +1,7 @@
 glue-mapreduce
 ==============
 
-node.js mapreduce library that has high portability for hadoop framework.
+node.js mapreduce library that has concept of "once write run anywhere" for hadoop framework.
 
 ##Motivation
 Scalable computing is more and more important for analyse and aggregate BigData, and Map-Reduce is scalable computing algorithm for distributed platform used in Hadoop or more another service.
@@ -17,6 +17,8 @@ TODO: publish
 
 ##How to use
 ###Script
+__Important__: This script runs on local or "Hadoop", so you should write the core of your Map-Reduce algorithm. Do not write any other algorithms.
+
 ```javascript
 var mr = new ( require('glue-mapreduce') )();
 
@@ -44,6 +46,7 @@ mr.reducer = function (key, values, callback) {
 
 // run Map-Reduce job
 mr.run(data, function (results) {
+    // this callback do not called on Hadoop
     /*
     results is array of key value pair
     [{
