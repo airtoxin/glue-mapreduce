@@ -15,20 +15,71 @@ describe( 'GlueMapReduce', function () {
     } );
 
     describe( 'mapper', function () {
-        it( 'Not Implemented', function ( done ) {
+        it( 'mapper function Not Implemented', function ( done ) {
             expect( mr.mapper ).to.throw( NotImplementError );
             done();
         } );
     } );
 
     describe( 'reducer', function () {
-        it( 'Not Implemented', function ( done ) {
+        it( 'reducer function Not Implemented', function ( done ) {
             expect( mr.mapper ).to.throw( NotImplementError );
             done();
         } );
     } );
 
     describe( 'run', function () {
-        // body...
+        it( 'mapper mode should be run _runHadoopMapper', function ( done ) {
+            mr.mode = 'mapper';
+            mr._runHadoopMapper = function () {
+                return done();
+            };
+
+            mr.run();
+        } );
+
+        it( 'map mode should be run _runHadoopMapper', function ( done ) {
+            mr.mode = 'map';
+            mr._runHadoopMapper = function () {
+                return done();
+            };
+
+            mr.run();
+        } );
+
+        it( 'reducer mode should be run _runHadoopReducer', function ( done ) {
+            mr.mode = 'reducer';
+            mr._runHadoopReducer = function () {
+                return done();
+            };
+
+            mr.run();
+        } );
+
+        it( 'map mode should be run _runHadoopReducer', function ( done ) {
+            mr.mode = 'reducer';
+            mr._runHadoopReducer = function () {
+                return done();
+            };
+
+            mr.run();
+        } );
+
+        it( 'Default should be run _runLocal', function ( done ) {
+            mr._runLocal = function () {
+                return done();
+            };
+
+            mr.run();
+        } );
+
+        it( 'Invalid mode should be run _runLocal', function ( done ) {
+            mr.mode = 'aaaaaaaaaaaaaaaaaaaaaa';
+            mr._runLocal = function () {
+                return done();
+            };
+
+            mr.run();
+        } );
     } );
 } );
