@@ -269,4 +269,38 @@ describe( 'GlueMapReduce', function () {
             } );
         } );
     } );
+
+    describe( '_runLocal', function () {
+        it( '_applyLocalMapper returns error', function ( done ) {
+            mr._applyLocalMapper = function ( data, callback ) {
+                return callback( 'errororroorrrrrr' );
+            };
+            mr._runLocal( [], function ( error ) {
+                assert.notEqual( error, null );
+                done();
+            } );
+        } );
+
+        it( 'shuffler returns error', function ( done ) {
+            mr.shuffler = function ( data, callback ) {
+                return callback( 'errororroorrrrrr' );
+            };
+            mr._runLocal( [], function ( error ) {
+                assert.notEqual( error, null );
+                done();
+            } );
+        } );
+
+        it( '_applyLocalReducer returns error', function ( done ) {
+            mr._applyLocalReducer = function ( data, callback ) {
+                return callback( 'errororroorrrrrr' );
+            };
+            mr._runLocal( [], function ( error ) {
+                assert.notEqual( error, null );
+                done();
+            } );
+        } );
+
+        it( 'results must be ' );
+    } );
 } );
