@@ -185,7 +185,7 @@ describe( 'GlueMapReduce', function () {
                 { k: 'hoge', v: 2 }
             ];
             mr.shuffler( data, function ( error, result ) {
-                var expect = [ { hoge: [ 1, 2 ] } ];
+                var expect = [ { k: 'hoge', v: [ 1, 2 ] } ];
                 assert.deepEqual( result, expect );
                 done();
             } );
@@ -198,8 +198,8 @@ describe( 'GlueMapReduce', function () {
             ];
             mr.shuffler( data, function ( error, result ) {
                 var expect = [
-                    { hoge: [ 1 ] },
-                    { fuga: [ 2 ] }
+                    { k: 'hoge', v: [ 1 ] },
+                    { k: 'fuga', v: [ 2 ] }
                 ];
                 assert.deepEqual( result, expect );
                 done();
@@ -212,7 +212,7 @@ describe( 'GlueMapReduce', function () {
                 { k: 'hoge', v: 2 }
             ];
             mr.shuffler( data, function ( error, result ) {
-                var expect = [ { hoge: [ 2 ] } ];
+                var expect = [ { k: 'hoge', v: [ 2 ] } ];
                 assert.deepEqual( result, expect );
                 done();
             } );
@@ -224,7 +224,8 @@ describe( 'GlueMapReduce', function () {
                 { fuga: 'b', v: 4 }
             ];
             mr.shuffler( data, function ( error, result ) {
-                var expect = [ { 'undefined': [ 2, 4 ] } ];
+                // TODO think
+                var expect = [ { k: 'undefined', v: [ 2, 4 ] } ];
                 assert.deepEqual( result, expect );
                 done();
             } );
@@ -236,7 +237,8 @@ describe( 'GlueMapReduce', function () {
                 { k: 'a', hoge: 1 },
             ];
             mr.shuffler( data, function ( error, result ) {
-                var expect = [ { a: [ void(0), void(0) ] } ];
+                // TODO think
+                var expect = [ { k: 'a', v: [ void(0), void(0) ] } ];
                 assert.deepEqual( result, expect );
                 done();
             } );
@@ -301,6 +303,29 @@ describe( 'GlueMapReduce', function () {
             } );
         } );
 
-        it( 'results must be ' );
+        it( 'Map-Reduce results', function ( done ) {
+            var input = [
+                'key1\tv',
+                'key1\tvv',
+                'key2\tvvv'
+            ];
+            mr.mapper = function ( line, callback ) {
+                var s = line.split( '\t' );
+                return callback( null, { k: s[0], v: s[1] } );
+            };
+            mr.reducer = function ( key, values, callback ) {
+                return callback( null, [ { k: key, v: values.length } ] );
+            };
+            // defined mapreduce is word counter of key
+            var expect = [
+                { k: 'key1', v: 2 },
+                { k: 'key2', v: 1 }
+            ];
+            mr._runLocal( input, function ( error, results ) {
+                assert.equal( error, null );
+                assert.deepEqual( results, expect );
+                done();
+            } );
+        } );
     } );
 } );
