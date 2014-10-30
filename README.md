@@ -20,9 +20,15 @@ TODO: publish
 __Important__: This script runs on local or "Hadoop", so you should write the core of your Map-Reduce algorithm. Do not write any other algorithms.
 
 ```javascript
-var mr = new ( require('glue-mapreduce') )();
+var mr = new (require('glue-mapreduce'))();
 
-var data = fs.readFileSync('somefile.txt').toString().split('\n');
+// regist "local" input data
+mr.input = function (callback) {
+    var error = null;
+    // data must be iterable
+    var data = fs.readFileSync('somefile.txt').toString().split('\n');
+    return callback(error, data);
+};
 
 // regist mapper
 mr.mapper = function (mapLine, callback) {
