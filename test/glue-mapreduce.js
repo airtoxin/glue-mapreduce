@@ -15,71 +15,166 @@ describe( 'GlueMapReduce', function () {
     } );
 
     describe( 'mapper', function () {
-        it( 'mapper function Not Implemented', function ( done ) {
+        it( 'mapper function not implemented', function ( done ) {
             expect( mr.mapper ).to.throw( NotImplementError );
             done();
         } );
     } );
 
     describe( 'reducer', function () {
-        it( 'reducer function Not Implemented', function ( done ) {
+        it( 'reducer function not implemented', function ( done ) {
             expect( mr.mapper ).to.throw( NotImplementError );
             done();
         } );
     } );
 
+    describe( 'input', function () {
+        it( 'input function not implemented', function ( done ) {
+            expect( mr.input ).to.throw( NotImplementError );
+            done();
+        } );
+    } );
+
     describe( 'run', function () {
+        beforeEach( function ( done ) {
+            mr = new GlueMapReduce();
+            done();
+        } );
+        it( 'input function not implemented', function ( done ) {
+            expect( mr.run ).to.throw( NotImplementError );
+            done();
+        } );
+
+        it( 'input function return error', function ( done ) {
+            mr.input = function ( callback ) {
+                return callback( 'EEEEEEEERRRRORoRO0RRR' );
+            };
+            mr.run( function ( error ) {
+                assert.notEqual( error, null );
+                done();
+            } );
+        } );
+
+        it( 'input function return not iterable data', function ( done ) {
+            mr.input = function ( callback ) {
+                var notIterable = 98424;
+                return callback( null, notIterable );
+            };
+            mr.run( function ( error ) {
+                assert.notEqual( error, null );
+                done();
+            } );
+        } );
+
         it( 'mapper mode should be run _runHadoopMapper', function ( done ) {
             mr.mode = 'mapper';
-            mr._runHadoopMapper = function () {
-                return done();
+            mr.input = function ( callback ) {
+                return callback( null, [] );
+            };
+            mr._runHadoopMapper = function ( data, callback ) {
+                assert.deepEqual( data, [] );
+                return callback();
             };
 
-            mr.run();
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
         } );
 
         it( 'map mode should be run _runHadoopMapper', function ( done ) {
             mr.mode = 'map';
-            mr._runHadoopMapper = function () {
-                return done();
+            mr.input = function ( callback ) {
+                return callback( null, [] );
+            };
+            mr._runHadoopMapper = function ( data, callback ) {
+                assert.deepEqual( data, [] );
+                return callback();
             };
 
-            mr.run();
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
         } );
 
         it( 'reducer mode should be run _runHadoopReducer', function ( done ) {
             mr.mode = 'reducer';
-            mr._runHadoopReducer = function () {
-                return done();
+            mr.input = function ( callback ) {
+                return callback( null, [] );
+            };
+            mr._runHadoopReducer = function ( data, callback ) {
+                assert.deepEqual( data, [] );
+                return callback();
             };
 
-            mr.run();
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
         } );
 
-        it( 'map mode should be run _runHadoopReducer', function ( done ) {
-            mr.mode = 'reducer';
-            mr._runHadoopReducer = function () {
-                return done();
+        it( 'reduce mode should be run _runHadoopReducer', function ( done ) {
+            mr.mode = 'reduce';
+            mr.input = function ( callback ) {
+                return callback( null, [] );
+            };
+            mr._runHadoopReducer = function ( data, callback ) {
+                assert.deepEqual( data, [] );
+                return callback();
             };
 
-            mr.run();
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
+
+        it( 'red mode should be run _runHadoopReducer', function ( done ) {
+            mr.mode = 'red';
+            mr.input = function ( callback ) {
+                return callback( null, [] );
+            };
+            mr._runHadoopReducer = function ( data, callback ) {
+                assert.deepEqual( data, [] );
+                return callback();
+            };
+
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
         } );
 
         it( 'Default should be run _runLocal', function ( done ) {
-            mr._runLocal = function () {
-                return done();
+            mr.input = function ( callback ) {
+                return callback( null, [] );
+            };
+            mr._runLocal = function ( data, callback ) {
+                assert.deepEqual( data, [] );
+                return callback();
             };
 
-            mr.run();
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
         } );
 
         it( 'Invalid mode should be run _runLocal', function ( done ) {
             mr.mode = 'aaaaaaaaaaaaaaaaaaaaaa';
-            mr._runLocal = function () {
-                return done();
+            mr.input = function ( callback ) {
+                return callback( null, [] );
+            };
+            mr._runLocal = function ( data, callback ) {
+                assert.deepEqual( data, [] );
+                return callback();
             };
 
-            mr.run();
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
         } );
     } );
 
@@ -145,6 +240,12 @@ describe( 'GlueMapReduce', function () {
                 assert.deepEqual( result, expect );
                 done();
             } );
+        } );
+    } );
+
+    describe( '_applyLocalMapper', function () {
+        it( 'OK', function ( done ) {
+            // body...
         } );
     } );
 } );
