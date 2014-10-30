@@ -244,8 +244,29 @@ describe( 'GlueMapReduce', function () {
     } );
 
     describe( '_applyLocalMapper', function () {
-        it( 'OK', function ( done ) {
-            // body...
+        it( 'mapper returns error', function ( done ) {
+            mr.mapper = function ( data, callback ) {
+                return callback( 'error' );
+            };
+            mr._applyLocalMapper( [], function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
+
+        it( 'mapper returns key value objects', function ( done ) {
+            var results = [
+                { k: 'this', v: 'is' },
+                { k: 'results', v: 'objects' }
+            ];
+            mr.mapper = function ( data, callback ) {
+                return callback( null, results );
+            };
+            mr._applyLocalMapper( [ 'something' ], function ( error, keyValueObjects ) {
+                assert.equal( error, null );
+                assert.deepEqual( keyValueObjects, results );
+                done();
+            } );
         } );
     } );
 } );
