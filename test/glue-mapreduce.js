@@ -328,4 +328,54 @@ describe( 'GlueMapReduce', function () {
             } );
         } );
     } );
+
+    describe( '_runHadoopMapper', function () {
+        it( 'mapper called per line', function ( done ) {
+            var counter = 0;
+            mr.mapper = function ( line, callback ) {
+                counter++;
+                return callback();
+            };
+            mr._runHadoopMapper( [ 'a', 'b', 'c' ], function ( error ) {
+                assert.equal( error, null );
+                assert.equal( counter, 3 );
+                done();
+            } );
+        } );
+
+        it( 'mapper returns error', function ( done ) {
+            var counter = 0;
+            mr.mapper = function ( line, callback ) {
+                counter++;
+                return callback( 'EOOOERRRRRRRR' );
+            };
+            mr._runHadoopMapper( [ 'a', 'b', 'c' ], function ( error ) {
+                assert.notEqual( error, null );
+                assert.equal( counter, 1 );
+                done();
+            } );
+        } );
+
+        it( '_outMapResults called per line', function ( done ) {
+            mr.mapper = function ( line, callback ) {
+                return callback( null );
+            };
+            var counter = 0;
+            mr._outMapResults = function () {
+                counter++;
+            };
+            mr._runHadoopMapper( [ 'a', 'b', 'c' ], function ( error ) {
+                assert.equal( error, null );
+                assert.equal( counter, 3 );
+                done();
+            } );
+        } );
+    } );
+
+    describe( '_outMapResults', function () {
+        it( 'synchronous', function ( done ) {
+            mr._outMapResults();
+            done();
+        } );
+    } );
 } );
