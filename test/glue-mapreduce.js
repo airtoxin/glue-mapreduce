@@ -29,19 +29,18 @@ describe( 'GlueMapReduce', function () {
     } );
 
     describe( 'input', function () {
-        it( 'input function not implemented', function ( done ) {
-            expect( mr.input ).to.throw( NotImplementError );
-            done();
+        it( 'Default input function returns empty array', function ( done ) {
+            mr.input( function ( error, data ) {
+                assert.equal( error, null );
+                assert.deepEqual( data, [] );
+                done();
+            } );
         } );
     } );
 
     describe( 'run', function () {
         beforeEach( function ( done ) {
             mr = new GlueMapReduce();
-            done();
-        } );
-        it( 'input function not implemented', function ( done ) {
-            expect( mr.run ).to.throw( NotImplementError );
             done();
         } );
 
