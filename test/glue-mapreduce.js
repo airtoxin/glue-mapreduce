@@ -378,4 +378,102 @@ describe( 'GlueMapReduce', function () {
             done();
         } );
     } );
+
+    describe( '_outMapResults', function () {
+        var systemLog = null;
+        beforeEach( function ( done ) {
+            systemLog = console.log;
+            done();
+        } );
+
+        it( 'log out per line', function ( done ) {
+            var counter = 0;
+            console.log = function () {
+                counter++;
+            };
+            mr._outMapResults( [ { k: 1, v: 2 }, { k: 2, v: 3 } ] );
+            assert.equal( counter, 2 );
+
+            console.log = systemLog
+            done();
+        } );
+
+        it( 'skip not have k key data', function ( done ) {
+            var counter = 0;
+            console.log = function () {
+                counter++;
+            };
+            mr._outMapResults( [ { aaaaaa: 1, v: 2 }, { k: 2, v: 3 } ] );
+            assert.equal( counter, 1 );
+
+            console.log = systemLog
+            done();
+        } );
+
+        it( 'skip not have v key data', function ( done ) {
+            var counter = 0;
+            console.log = function () {
+                counter++;
+            };
+            mr._outMapResults( [ { k: 1, aaaaaaaa: 2 }, { k: 2, v: 3 } ] );
+            assert.equal( counter, 1 );
+
+            console.log = systemLog
+            done();
+        } );
+
+        afterEach( function ( done ) {
+            console.log = systemLog;
+            done();
+        } );
+    } );
+
+    describe( '_outReduceResults', function () {
+        var systemLog = null;
+        beforeEach( function ( done ) {
+            systemLog = console.log;
+            done();
+        } );
+
+        it( 'log out per line', function ( done ) {
+            var counter = 0;
+            console.log = function () {
+                counter++;
+            };
+            mr._outReduceResults( [ { k: 1, v: 2 }, { k: 2, v: 3 } ] );
+            assert.equal( counter, 2 );
+
+            console.log = systemLog
+            done();
+        } );
+
+        it( 'skip not have k key data', function ( done ) {
+            var counter = 0;
+            console.log = function () {
+                counter++;
+            };
+            mr._outReduceResults( [ { aaaaaa: 1, v: 2 }, { k: 2, v: 3 } ] );
+            assert.equal( counter, 1 );
+
+            console.log = systemLog
+            done();
+        } );
+
+        it( 'skip not have v key data', function ( done ) {
+            var counter = 0;
+            console.log = function () {
+                counter++;
+            };
+            mr._outReduceResults( [ { k: 1, aaaaaaaa: 2 }, { k: 2, v: 3 } ] );
+            assert.equal( counter, 1 );
+
+            console.log = systemLog
+            done();
+        } );
+
+        afterEach( function ( done ) {
+            console.log = systemLog;
+            done();
+        } );
+    } );
 } );
