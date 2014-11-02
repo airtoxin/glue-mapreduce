@@ -38,142 +38,73 @@ describe( 'GlueMapReduce', function () {
         } );
     } );
 
+    describe( '_input', function () {
+        it( 'mapper mode is Stdin mode', function ( done ) {
+            mr.mode = 'mapper';
+            mr._getStdin = function () {
+                return done();
+            };
+            mr.input = function () {
+                assert.ok( false, 'input function should not called' );
+            };
+            mr._input();
+        } );
+        it( 'map mode is Stdin mode', function ( done ) {
+            mr.mode = 'map';
+            mr._getStdin = function () {
+                return done();
+            };
+            mr.input = function () {
+                assert.ok( false, 'input function should not called' );
+            };
+            mr._input();
+        } );
+        it( 'reducer mode is Stdin mode', function ( done ) {
+            mr.mode = 'reducer';
+            mr._getStdin = function () {
+                return done();
+            };
+            mr.input = function () {
+                assert.ok( false, 'input function should not called' );
+            };
+            mr._input();
+        } );
+        it( 'reduce mode is Stdin mode', function ( done ) {
+            mr.mode = 'reduce';
+            mr._getStdin = function () {
+                return done();
+            };
+            mr.input = function () {
+                assert.ok( false, 'input function should not called' );
+            };
+            mr._input();
+        } );
+        it( 'red mode is Stdin mode', function ( done ) {
+            mr.mode = 'red';
+            mr._getStdin = function () {
+                return done();
+            };
+            mr.input = function () {
+                assert.ok( false, 'input function should not called' );
+            };
+            mr._input();
+        } );
+        it( 'Default mode is input mode', function ( done ) {
+            mr.mode = 'aaaaa';
+            mr._getStdin = function () {
+                assert.ok( false, '_getStdin function should not called' );
+            };
+            mr.input = function () {
+                return done();
+            };
+            mr._input();
+        } );
+    } );
+
     describe( 'run', function () {
         beforeEach( function ( done ) {
             mr = new GlueMapReduce();
             done();
-        } );
-
-        it( 'input function return error', function ( done ) {
-            mr.input = function ( callback ) {
-                return callback( 'EEEEEEEERRRRORoRO0RRR' );
-            };
-            mr.run( function ( error ) {
-                assert.notEqual( error, null );
-                done();
-            } );
-        } );
-
-        it( 'input function return not iterable data', function ( done ) {
-            mr.input = function ( callback ) {
-                var notIterable = 98424;
-                return callback( null, notIterable );
-            };
-            mr.run( function ( error ) {
-                assert.notEqual( error, null );
-                done();
-            } );
-        } );
-
-        it( 'mapper mode should be run _runHadoopMapper', function ( done ) {
-            mr.mode = 'mapper';
-            mr.input = function ( callback ) {
-                return callback( null, [] );
-            };
-            mr._runHadoopMapper = function ( data, callback ) {
-                assert.deepEqual( data, [] );
-                return callback();
-            };
-
-            mr.run( function ( error ) {
-                assert.equal( error, null );
-                done();
-            } );
-        } );
-
-        it( 'map mode should be run _runHadoopMapper', function ( done ) {
-            mr.mode = 'map';
-            mr.input = function ( callback ) {
-                return callback( null, [] );
-            };
-            mr._runHadoopMapper = function ( data, callback ) {
-                assert.deepEqual( data, [] );
-                return callback();
-            };
-
-            mr.run( function ( error ) {
-                assert.equal( error, null );
-                done();
-            } );
-        } );
-
-        it( 'reducer mode should be run _runHadoopReducer', function ( done ) {
-            mr.mode = 'reducer';
-            mr.input = function ( callback ) {
-                return callback( null, [] );
-            };
-            mr._runHadoopReducer = function ( data, callback ) {
-                assert.deepEqual( data, [] );
-                return callback();
-            };
-
-            mr.run( function ( error ) {
-                assert.equal( error, null );
-                done();
-            } );
-        } );
-
-        it( 'reduce mode should be run _runHadoopReducer', function ( done ) {
-            mr.mode = 'reduce';
-            mr.input = function ( callback ) {
-                return callback( null, [] );
-            };
-            mr._runHadoopReducer = function ( data, callback ) {
-                assert.deepEqual( data, [] );
-                return callback();
-            };
-
-            mr.run( function ( error ) {
-                assert.equal( error, null );
-                done();
-            } );
-        } );
-
-        it( 'red mode should be run _runHadoopReducer', function ( done ) {
-            mr.mode = 'red';
-            mr.input = function ( callback ) {
-                return callback( null, [] );
-            };
-            mr._runHadoopReducer = function ( data, callback ) {
-                assert.deepEqual( data, [] );
-                return callback();
-            };
-
-            mr.run( function ( error ) {
-                assert.equal( error, null );
-                done();
-            } );
-        } );
-
-        it( 'Default should be run _runLocal', function ( done ) {
-            mr.input = function ( callback ) {
-                return callback( null, [] );
-            };
-            mr._runLocal = function ( data, callback ) {
-                assert.deepEqual( data, [] );
-                return callback();
-            };
-
-            mr.run( function ( error ) {
-                assert.equal( error, null );
-                done();
-            } );
-        } );
-
-        it( 'Invalid mode should be run _runLocal', function ( done ) {
-            mr.mode = 'aaaaaaaaaaaaaaaaaaaaaa';
-            mr.input = function ( callback ) {
-                return callback( null, [] );
-            };
-            mr._runLocal = function ( data, callback ) {
-                assert.deepEqual( data, [] );
-                return callback();
-            };
-
-            mr.run( function ( error ) {
-                assert.equal( error, null );
-                done();
-            } );
         } );
     } );
 
