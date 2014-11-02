@@ -65,7 +65,7 @@ mr.run(data, function (results) {
 ###run options
 glue-mapreduce make a decision about whether to run with local Map-Reduce or Hadoop streaming mapper or reducer by command-line argument.
 
-To run __local Map-Reduce__, `node somemapreduce.js local`
+To run __local Map-Reduce__, `node somemapreduce.js local` or no arguments.
 
 To run __Hadoop Streaming Mapper__, `hadop jar hadoop-streaming.jar -mapper 'somemapreduce.js mapper' ...`
 
@@ -74,3 +74,8 @@ To run __Hadoop Streaming Reducer__, `hadoop jar hadoop-streaming.jar -reducer '
 __Important__: To quote command need to assign argument.
 
 These behavior also can control by `mr.mode` variable. This valiable can be taken `'local'`, `'mapper'` or `'reducer'`. e.g. `mr.mode = 'local'` runs local Map-Reduce aggregation.
+
+###Testing
+If you want to test your script, following command can be test hadoop mode.
+
+`node myscript.js map < myinput.txt | sort | node myscript.js red`
