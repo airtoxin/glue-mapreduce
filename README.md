@@ -2,6 +2,7 @@ glue-mapreduce
 ==============
 
 [![Build Status](https://travis-ci.org/airtoxin/glue-mapreduce.svg?branch=master)](https://travis-ci.org/airtoxin/glue-mapreduce)
+[![Coverage Status](https://img.shields.io/coveralls/airtoxin/glue-mapreduce.svg)](https://coveralls.io/r/airtoxin/glue-mapreduce)
 
 node.js mapreduce library that has concept of "once write run anywhere" for hadoop framework.
 
@@ -81,3 +82,9 @@ These behavior also can control by `mr.mode` variable. This valiable can be take
 If you want to test your script, following command can be test hadoop mode.
 
 `node myscript.js map < myinput.txt | sort | node myscript.js red`
+
+###Contribute
+####Testing
+`npm test`
+####Coverage
+`npm run coverage`

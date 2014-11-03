@@ -4,7 +4,8 @@
   "description": "A mapreduce library that has high portability for hadoop framework",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive -R spec test"
+    "test": "mocha --recursive -R spec test",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,9 @@
   },
   "devDependencies": {
     "chai": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "istanbul": "*",
+    "coveralls": "*",
+    "mocha-lcov-reporter": "*"
   }
 }
