@@ -39,6 +39,10 @@ describe( 'GlueMapReduce', function () {
     } );
 
     describe( '_input', function () {
+        beforeEach( function ( done ) {
+            mr = new GlueMapReduce();
+            done();
+        } );
         it( 'mapper mode is Stdin mode', function ( done ) {
             mr.mode = 'mapper';
             mr._getStdin = function () {
@@ -172,6 +176,10 @@ describe( 'GlueMapReduce', function () {
     } );
 
     describe( '_applyLocalMapper', function () {
+        beforeEach( function ( done ) {
+            mr = new GlueMapReduce();
+            done();
+        } );
         it( 'mapper returns error', function ( done ) {
             mr.mapper = function ( data, callback ) {
                 return callback( 'error' );
@@ -199,6 +207,10 @@ describe( 'GlueMapReduce', function () {
     } );
 
     describe( '_runLocal', function () {
+        beforeEach( function ( done ) {
+            mr = new GlueMapReduce();
+            done();
+        } );
         it( '_applyLocalMapper returns error', function ( done ) {
             mr._applyLocalMapper = function ( data, callback ) {
                 return callback( 'errororroorrrrrr' );
@@ -256,6 +268,10 @@ describe( 'GlueMapReduce', function () {
     } );
 
     describe( '_runHadoopMapper', function () {
+        beforeEach( function ( done ) {
+            mr = new GlueMapReduce();
+            done();
+        } );
         it( 'mapper called per line', function ( done ) {
             var counter = 0;
             mr.mapper = function ( line, callback ) {
