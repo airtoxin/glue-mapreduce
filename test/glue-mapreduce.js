@@ -148,28 +148,24 @@ describe( 'GlueMapReduce', function () {
             } );
         } );
 
-        it( 'Not have k field should return undefined key', function ( done ) {
+        it( 'Not have k field', function ( done ) {
             var data = [
                 { hoge: 'a', v: 2 },
                 { fuga: 'b', v: 4 }
             ];
             mr.shuffler( data, function ( error, result ) {
-                // TODO think
-                var expect = [ { k: 'undefined', v: [ 2, 4 ] } ];
-                assert.deepEqual( result, expect );
+                assert.deepEqual( result, [] );
                 done();
             } );
         } );
 
-        it( 'Not have v field should return undefined value', function ( done ) {
+        it( 'Not have v field', function ( done ) {
             var data = [
                 { k: 'a', hoge: 1 },
                 { k: 'a', hoge: 1 },
             ];
             mr.shuffler( data, function ( error, result ) {
-                // TODO think
-                var expect = [ { k: 'a', v: [ void(0), void(0) ] } ];
-                assert.deepEqual( result, expect );
+                assert.deepEqual( result, [] );
                 done();
             } );
         } );
