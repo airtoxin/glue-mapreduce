@@ -23,7 +23,7 @@ describe( 'GlueMapReduce', function () {
 
     describe( 'reducer', function () {
         it( 'reducer function not implemented', function ( done ) {
-            expect( mr.mapper ).to.throw( NotImplementError );
+            expect( mr.reducer ).to.throw( NotImplementError );
             done();
         } );
     } );
