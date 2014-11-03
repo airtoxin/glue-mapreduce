@@ -110,6 +110,139 @@ describe( 'GlueMapReduce', function () {
             mr = new GlueMapReduce();
             done();
         } );
+
+        it( 'error occurred', function ( done ) {
+            var flag = false;
+            mr._input = function ( callback ) {
+                flag = true;
+                return callback( 'eeeerrreeeroooorrrrr' );
+            };
+            mr.run( function ( error ) {
+                assert.notEqual( error, null );
+                assert.ok( flag );
+                done();
+            } );
+        } );
+
+        it( 'data is not array', function ( done ) {
+            var flag = false;
+            mr._input = function ( callback ) {
+                flag = true;
+                return callback( null, 892498 );
+            };
+            mr.run( function ( error ) {
+                assert.notEqual( error, null );
+                assert.ok( flag );
+                done();
+            } );
+        } );
+
+        it( 'mode is mapper', function ( done ) {
+            var data = [ { k: 'key', v: 'vaaaaaalue' } ];
+            mr._input = function ( callback ) {
+                return callback( null, data );
+            };
+            var flag = false;
+            mr._runHadoopMapper = function ( input, callback ) {
+                flag = true;
+                assert.deepEqual( input, data );
+                return callback();
+            };
+            mr.mode = 'mapper';
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
+
+        it( 'mode is map', function ( done ) {
+            var data = [ { k: 'key', v: 'vaaaaaalue' } ];
+            mr._input = function ( callback ) {
+                return callback( null, data );
+            };
+            var flag = false;
+            mr._runHadoopMapper = function ( input, callback ) {
+                flag = true;
+                assert.deepEqual( input, data );
+                return callback();
+            };
+            mr.mode = 'map';
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
+
+        it( 'mode is reducer', function ( done ) {
+            var data = [ { k: 'key', v: 'vaaaaaalue' } ];
+            mr._input = function ( callback ) {
+                return callback( null, data );
+            };
+            var flag = false;
+            mr._runHadoopReducer = function ( input, callback ) {
+                flag = true;
+                assert.deepEqual( input, data );
+                return callback();
+            };
+            mr.mode = 'reducer';
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
+
+        it( 'mode is reduce', function ( done ) {
+            var data = [ { k: 'key', v: 'vaaaaaalue' } ];
+            mr._input = function ( callback ) {
+                return callback( null, data );
+            };
+            var flag = false;
+            mr._runHadoopReducer = function ( input, callback ) {
+                flag = true;
+                assert.deepEqual( input, data );
+                return callback();
+            };
+            mr.mode = 'reduce';
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
+
+        it( 'mode is red', function ( done ) {
+            var data = [ { k: 'key', v: 'vaaaaaalue' } ];
+            mr._input = function ( callback ) {
+                return callback( null, data );
+            };
+            var flag = false;
+            mr._runHadoopReducer = function ( input, callback ) {
+                flag = true;
+                assert.deepEqual( input, data );
+                return callback();
+            };
+            mr.mode = 'red';
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
+
+        it( 'mode is default', function ( done ) {
+            var data = [ { k: 'key', v: 'vaaaaaalue' } ];
+            mr._input = function ( callback ) {
+                return callback( null, data );
+            };
+            var flag = false;
+            mr._runLocal = function ( input, callback ) {
+                flag = true;
+                assert.deepEqual( input, data );
+                return callback();
+            };
+            mr.run( function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
     } );
 
     describe( 'shuffler', function () {
