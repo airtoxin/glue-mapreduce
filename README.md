@@ -1,6 +1,8 @@
 glue-mapreduce
 ==============
 
+[![Build Status](https://travis-ci.org/airtoxin/glue-mapreduce.svg?branch=master)](https://travis-ci.org/airtoxin/glue-mapreduce)
+
 node.js mapreduce library that has concept of "once write run anywhere" for hadoop framework.
 
 ##Motivation
