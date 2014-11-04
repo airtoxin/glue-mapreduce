@@ -573,14 +573,55 @@ describe( 'GlueMapReduce', function () {
                 return callback();
             };
             var data = [
-                'key	a',
-                'key	b',
-                'key	c'
+                'key\ta',
+                'key\tb',
+                'key\tc'
             ];
             mr._runHadoopReducer( data, function ( error ) {
                 assert.equal( error, null );
                 done();
             } );
         } );
+
+        it( 'reducer returns error', function ( done ) {
+            mr.reducer = function ( key, values, callback ) {
+                return callback( 'this is error' );
+            };
+            var data = [
+                'key\ta',
+                'key\tb',
+                'key2\ta',
+                'key2\tb'
+            ];
+            mr._runHadoopReducer( data, function ( error ) {
+                assert.notEqual( error, null );
+                done();
+            } );
+        } );
+
+        it( '_outReduceResults run', function ( done ) {
+            var data = [
+                'key\ta',
+                'key\tb',
+                'key2\tc',
+                'key2\td'
+            ];
+            var expect = [
+                { k: 'key',  v: 'ab' },
+                { k: 'key2', v: 'cd' }
+            ];
+            var flag = false;
+            mr._outReduceResults = function ( keyValueObjects ) {
+                flag = true;
+            };
+            mr.reducer = function ( key, values, callback ) {
+                return callback( null, [ { k: key, v: values.join('') } ] );
+            };
+            mr._runHadoopReducer( data, function ( error ) {
+                assert.ok( flag );
+                assert.equal( error, null );
+                done();
+            } );
+        } )
     } );
 } );
