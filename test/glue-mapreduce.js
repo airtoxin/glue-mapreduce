@@ -551,4 +551,36 @@ describe( 'GlueMapReduce', function () {
             done();
         } );
     } );
+
+    describe( '_runHadoopReducer', function () {
+        beforeEach( function ( done ) {
+            mr = new GlueMapReduce();
+            done();
+        } );
+        it( 'empty data', function ( done ) {
+            mr._runHadoopReducer( [], function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
+
+        it( 'reducer gets values', function ( done ) {
+            var flag = false;
+            mr.reducer = function ( key, values, callback ) {
+                assert.equal( key, 'key' );
+                assert.deepEqual( values, [ 'a', 'b', 'c' ] );
+                flag = true;
+                return callback();
+            };
+            var data = [
+                'key	a',
+                'key	b',
+                'key	c'
+            ];
+            mr._runHadoopReducer( data, function ( error ) {
+                assert.equal( error, null );
+                done();
+            } );
+        } );
+    } );
 } );
